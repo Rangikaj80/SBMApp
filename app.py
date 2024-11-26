@@ -30,6 +30,7 @@ def hash_password(password):
         raise TypeError("Password must be a string or bytes.")
     
     return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+
     
 def check_password(password, hashed_password):
     return bcrypt.checkpw(password.encode('utf-8'), hashed_password.encode('utf-8'))
@@ -132,14 +133,20 @@ def auth_page():
     new_password = st.text_input("Enter a new password", type="password")
     
     if st.button("Submit"):
-        print(f"Debug: new_password = {new_password}, type = {type(new_password)}")
+        
         try:
+            if not new_password:
+                st.error("Password cannot be empty!")
+                return
+
             hashed_password = hash_password(new_password)
             st.success("Password hashed successfully!")
             print(f"Hashed password: {hashed_password}")  # For debugging
         except Exception as e:
             st.error(f"Error: {e}")
             print(f"Error: {e}")
+
+
     
     with tab2:
         st.header("Sign Up")
