@@ -1,0 +1,6 @@
+pandas==2.2.3
+plotly==5.22.0
+python_bcrypt==0.3.2
+streamlit==1.39.0
+~treamlit==1.36.0
+~treamlit==1.38.0
