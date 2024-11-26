@@ -24,12 +24,15 @@ def init_db():
 
 # Helper functions
 def hash_password(password):
+    if isinstance(password, bytes):
+        password = password.decode('utf-8')  # Decode bytes to string if needed
+    elif not isinstance(password, str):
+        raise TypeError("Password must be a string or bytes.")
+    
     return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
     
 def check_password(password, hashed_password):
     return bcrypt.checkpw(password.encode('utf-8'), hashed_password.encode('utf-8'))
-
-
 
 def add_transaction(shop_name, date, sales, cash_out, expenses, bank_deposit):
     conn = sqlite3.connect('shop_management.db')
@@ -124,6 +127,19 @@ def auth_page():
                 
             else:
                 st.error("Invalid username or password")
+
+
+    new_password = st.text_input("Enter a new password", type="password")
+    
+    if st.button("Submit"):
+        print(f"Debug: new_password = {new_password}, type = {type(new_password)}")
+        try:
+            hashed_password = hash_password(new_password)
+            st.success("Password hashed successfully!")
+            print(f"Hashed password: {hashed_password}")  # For debugging
+        except Exception as e:
+            st.error(f"Error: {e}")
+            print(f"Error: {e}")
     
     with tab2:
         st.header("Sign Up")
