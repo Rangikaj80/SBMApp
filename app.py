@@ -24,10 +24,12 @@ def init_db():
 
 # Helper functions
 def hash_password(password):
-    return bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
-
+    return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+    
 def check_password(password, hashed_password):
-    return bcrypt.checkpw(password.encode(), hashed_password.encode())
+    return bcrypt.checkpw(password.encode('utf-8'), hashed_password.encode('utf-8'))
+
+
 
 def add_transaction(shop_name, date, sales, cash_out, expenses, bank_deposit):
     conn = sqlite3.connect('shop_management.db')
